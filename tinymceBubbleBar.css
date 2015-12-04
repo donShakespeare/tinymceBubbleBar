@@ -1,0 +1,91 @@
+#myOwnBarWrapper {
+    position: absolute;
+    transition: none;
+    animation: noner;
+    z-index: 9999;
+    padding: 0;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.75);
+    background: none;
+    background: -moz-linear-gradient(top, #000 0%, #fff 100%);
+    background: -webkit-linear-gradient(top, #000 0%, #fff 100%);
+    background: -o-linear-gradient(top, #000 0%, #fff 100%);
+    background: -ms-linear-gradient(top, #000 0%, #fff 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#2ca6f8', endColorstr='#2b8ae2', GradientType=0);
+    opacity: 0;
+    margin: 0;
+    list-style: none;
+    font-family: Arial, Helvetica, "Hiragino Sans GB", sans-serif;
+    text-rendering: optimizeLegibility;
+    white-space: nowrap;
+    visibility: hidden;
+}
+
+#myOwnBarWrapper.active {
+    opacity: 0.95 !important;
+    visibility: visible;
+    animation: tinyBubble-pop-upwards 180ms forwards linear;
+}
+
+@-webkit-keyframes tinyBubble-pop-upwards {
+    0% {
+        opacity: 0;
+        -webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
+        transform: matrix(0.97, 0, 0, 1, 0, 12);
+    }
+    20% {
+        opacity: .7;
+        -webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
+        transform: matrix(0.99, 0, 0, 1, 0, 2);
+    }
+    40% {
+        opacity: 1;
+        -webkit-transform: matrix(1, 0, 0, 1, 0, -1);
+        transform: matrix(1, 0, 0, 1, 0, -1);
+    }
+    100% {
+        -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+}
+
+@keyframes tinyBubble-pop-upwards {
+    0% {
+        opacity: 0;
+        -webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
+        transform: matrix(0.97, 0, 0, 1, 0, 12);
+    }
+    20% {
+        opacity: .7;
+        -webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
+        transform: matrix(0.99, 0, 0, 1, 0, 2);
+    }
+    40% {
+        opacity: 1;
+        -webkit-transform: matrix(1, 0, 0, 1, 0, -1);
+        transform: matrix(1, 0, 0, 1, 0, -1);
+    }
+    100% {
+        -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+}
+
+
+#myOwnBarWrapper button {
+    padding: 4px 10px !important;
+}
+
+#myOwnBarWrapper .mce-panel {
+    background: none;
+}
+
+#myOwnBarWrapper * {
+    color: #000 !important;
+}
