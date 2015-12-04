@@ -3,6 +3,9 @@ First and only awesome floating air bubble toolbar for TinyMCE inline mode. Base
 
 Out of the box, this plugin can be used for any RTE; but we are glad to dedicate it to TinyMCE, because TinyMCE is simply the best. Used by the MODX <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a> in the new Imogen Theme
 
+#DEMO
+http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
+
 #Usage
 After loading *jQuery* and *tinymce.js*, load the bubble
 ```html
