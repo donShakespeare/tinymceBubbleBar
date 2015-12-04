@@ -6,7 +6,7 @@ Out of the box, this plugin can be used for any RTE; but we are glad to dedicate
 #Usage
 After loading *jQuery* and *tinymce.js*, load the bubble
 ```html
-<script type="text/javascript" src="tinymceBubbleBar.js"></script>
+<script type="text/javascript" src="tinymceBubbleBar.js" target="_blank"></script>
 ```
 Sample TinyMCE code, inline mode
 ```html
