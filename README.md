@@ -9,8 +9,8 @@ http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
 #Usage
 After loading *jQuery* and *tinymce.js*, load the bubble
 ```html
-<link href='https://cdn.rawgit.com/donShakespeare/tinymceBubbleBar/master/tinymceBubbleBar.css' rel='stylesheet'>
-<script src="https://cdn.rawgit.com/donShakespeare/tinymceBubbleBar/master/tinymceBubbleBar.js"></script>
+<link href='tinymceBubbleBar.css' rel='stylesheet'>
+<script src="tinymceBubbleBar.js"></script>
 ```
 Sample TinyMCE code, inline mode
 ```html
