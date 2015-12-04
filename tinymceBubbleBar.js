@@ -178,7 +178,7 @@
       enable: null,
       disable: null,
       position: "fixed",
-      keepSilentWhenBlankSelected: false
+      keepSilentWhenBlankSelected: true
     },
 
     instances: [],
