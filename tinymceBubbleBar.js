@@ -21,7 +21,8 @@
     }
 });
 */
-$('head').append('<link rel="stylesheet" href="tinymceBubbleBar.css" />')
+var inlineGoodPracticeCSS = ".mce-bubbleBar{position:absolute !important;z-index:9;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.75);opacity:0!important;visibility:hidden}.mce-bubbleBar.mce-tbActiveBar{position:absolute !important;z-index:9;opacity:.95!important;visibility:visible!important;animation:tinyBubble-pop-upwards 180ms forwards linear}@keyframes tinyBubble-pop-upwards{0%{opacity:0;transform:matrix(.97,0,0,1,0,12)}20%{opacity:.7;transform:matrix(.99,0,0,1,0,2)}40%{opacity:1;transform:matrix(1,0,0,1,0,-1)}100%{transform:matrix(1,0,0,1,0,0)}}";
+$('head').append('<style>'+inlineGoodPracticeCSS+'</style>')
 function fineTuneBarPosition(editor, range, bar) {
   var edges = range.getBoundingClientRect(),
     middleEdges = (edges.left + edges.right) / 2,
