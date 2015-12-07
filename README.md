@@ -7,12 +7,7 @@ We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br
 http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
 
 #Usage
-After loading *jQuery* and *tinymce.js*, load the bubble
-```html
-<link href='tinymceBubbleBar.css' rel='stylesheet'>
-<script src="tinymceBubbleBar.js"></script>
-```
-Sample TinyMCE code
+After loading `jQuery` and `tinymce.js`,
 ```html
   tinymce.init({
     selector: "#myEditor",
