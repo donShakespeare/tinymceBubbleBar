@@ -7,6 +7,7 @@ We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br
 http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
 
 #Usage
+In any modern browser...<br>
 After loading `jQuery` and `tinymce.js`,
 ```html
   tinymce.init({
