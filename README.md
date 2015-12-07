@@ -1,5 +1,5 @@
 # tinymceBubbleBar.js
-First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>Inpired by <a href="https://github.com/kenshin54/popline" target="_blank">popline.js</a>, <a href="https://github.com/yabwe/medium-editor" target="_blank">medium-editor</a> and <a href="https://medium.com/" target="_blank">medium.com</a>
+First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>Inpired by <a href="https://github.com/kenshin54/popline" target="_blank">popline.js</a>, <a href="https://github.com/yabwe/medium-editor" target="_blank">medium-editor clone</a> and <a href="https://medium.com/" target="_blank">medium.com</a>
 
 We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed in MODX by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
 
