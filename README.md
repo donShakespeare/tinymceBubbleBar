@@ -3,7 +3,7 @@ First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>
 
 We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed in most advanced and simple CMS, MODX, by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
 
-#DEMO
+#DEMO & FIDDLE
 http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
 
 #Usage
