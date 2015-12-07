@@ -1,7 +1,7 @@
 # tinymceBubbleBar.js
-First and only awesome floating air bubble toolbar for TinyMCE inline mode. Based heavily on https://github.com/kenshin54/popline
+First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>Inpired by <a href="https://github.com/kenshin54/popline" target="_blank">popline.js</a>, <a href="https://github.com/yabwe/medium-editor" target="_blank">medium-editor</a> and <a href="medium.com" target="_blank">medium.com</a>
 
-Out of the box, this plugin can be used for any RTE; but we are glad to dedicate it to TinyMCE, because TinyMCE is simply the best. Used by the MODX <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a> in the new Imogen Theme
+We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed in MODX by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
 
 #DEMO
 http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
@@ -12,16 +12,18 @@ After loading *jQuery* and *tinymce.js*, load the bubble
 <link href='tinymceBubbleBar.css' rel='stylesheet'>
 <script src="tinymceBubbleBar.js"></script>
 ```
-Sample TinyMCE code, inline mode
+Sample TinyMCE code
 ```html
   tinymce.init({
-   inline: true,
-   selector: ".myDivs",
-   fixed_toolbar_container: "#myOwnBarWrapper",
-   ...
-  })
+    selector: "#myEditor",
+    menubar: false, //or true
+    //inline: true, //or false
+    //fixed_toolbar_container: "#myOwnBarWrapper", // use with inline mode
+    plugins: ["bubbleBar, ... "],
+    toolbar: "bold italic underline ...",
+    external_plugins: {
+      bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // file location
+    }
+});
   ```
-  Initialize the bubble, and prepare for awesomeness
-  ```html
-  $(".myDivs").tinymceBubbleBar({bubbleWrap: "#myOwnBarWrapper"});
-  ```
+
