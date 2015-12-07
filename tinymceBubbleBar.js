@@ -10,7 +10,7 @@
   Usage:
 
   tinymce.init({
-    selector: "#inlineDiv",
+    selector: "#myEditor",
     menubar: false, //or true
     //inline: true, //or false
     //fixed_toolbar_container: "#myOwnBarWrapper", // use with inline mode
@@ -20,10 +20,8 @@
       bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // file location
     }
 });
-  
-
 */
-
+$('head').append('<link rel="stylesheet" href="tinymceBubbleBar.css" />')
 function fineTuneBarPosition(editor, range, bar) {
   var edges = range.getBoundingClientRect(),
     middleEdges = (edges.left + edges.right) / 2,
@@ -97,3 +95,15 @@ function bubbleUp(editor, addClass) {
     }
   }, 100)
 }
+tinymce.PluginManager.add('bubbleBar', function(editor) {
+  editor.on("init", function() {
+    bubbleUp(editor, "addClass")
+  })
+  editor.on('mouseup keyup', function(event) {
+    bubbleUp(editor) 
+    // if mouse mouses up outside the boundary of editor, nothing happens
+  })
+  editor.on('blur', function(event) {
+    $('.mce-bubbleBar').removeClass('mce-tbActiveBar')
+  })
+})
