@@ -21,4 +21,5 @@ After loading `jQuery` and `tinymce.js`,
     }
 });
   ```
+  In `TinymceWrapper`, to affect all editors at once, call `external_plugins: {...` in your `TinymceWrapperCommonCode` chunk.<br> Or else, make the call in your individual init chunks.
 
