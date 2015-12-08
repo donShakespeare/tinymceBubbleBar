@@ -15,7 +15,6 @@ After loading `jQuery` and `tinymce.js`,
     menubar: false, //or true
     //inline: true, //or false
     //fixed_toolbar_container: "#myOwnBarWrapper", // use with inline mode
-    plugins: ["bubbleBar, ... "],
     toolbar: "bold italic underline ...",
     external_plugins: {
       bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // file location
