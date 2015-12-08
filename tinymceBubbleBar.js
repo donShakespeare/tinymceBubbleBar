@@ -15,13 +15,14 @@
     //inline: true, //or false
     //fixed_toolbar_container: "#myOwnBarWrapper", // use with inline mode
     plugins: ["bubbleBar, ... "],
-    toolbar: "bold italic underline ...",
+    toolbar: "bold italic underline bubbleBarOptionsButton", //add optional button for sticky bar
+    //bubbleBarForcedWidth: 200 //optional
     external_plugins: {
       bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // file location
     }
 });
 */
-var inlineGoodPracticeCSS = ".mce-bubbleBar{position:absolute !important;z-index:9;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.75);opacity:0!important;visibility:hidden}.mce-bubbleBar.mce-tbActiveBar{position:absolute !important;z-index:9;opacity:.95!important;visibility:visible!important;animation:tinyBubble-pop-upwards 180ms forwards linear}@keyframes tinyBubble-pop-upwards{0%{opacity:0;transform:matrix(.97,0,0,1,0,12)}20%{opacity:.7;transform:matrix(.99,0,0,1,0,2)}40%{opacity:1;transform:matrix(1,0,0,1,0,-1)}100%{transform:matrix(1,0,0,1,0,0)}}";
+var inlineGoodPracticeCSS = ".mce-bubbleBar{position:absolute !important;z-index:9;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.75);opacity:0!important;visibility:hidden}.mce-bubbleBar.mce-tbActiveBar{position:absolute !important;z-index:9;opacity:.95!important;visibility:visible!important;animation:tinyBubble-pop-upwards 180ms forwards linear}.mce-bubbleBar.mce-bubbleBarSticky{visibility:visible!important;opacity:1!important;}@keyframes tinyBubble-pop-upwards{0%{opacity:0;transform:matrix(.97,0,0,1,0,12)}20%{opacity:.7;transform:matrix(.99,0,0,1,0,2)}40%{opacity:1;transform:matrix(1,0,0,1,0,-1)}100%{transform:matrix(1,0,0,1,0,0)}}";
 $('head').append('<style>'+inlineGoodPracticeCSS+'</style>')
 function fineTuneBarPosition(editor, range, bar) {
   var edges = range.getBoundingClientRect(),
@@ -33,8 +34,9 @@ function fineTuneBarPosition(editor, range, bar) {
     leftAnchor = leftExtremist - middleBar,
     windowWidth = $(window).innerWidth(),
     windowHeight = $(window).innerHeight(),
-    scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-  extraPadding = 10;
+    scrollTop = document.body.scrollTop || document.documentElement.scrollTop,
+    extraPadding = 10,
+    bubbleBarForcedWidth = editor.getParam("bubbleBarForcedWidth") ? editor.getParam("bubbleBarForcedWidth") : '';
   //deal with TinyMCE inline mode - simple element on same page
   if (editor.getParam('inline')) {
     var thisEditor = $("#" + editor.id);
@@ -69,27 +71,44 @@ function fineTuneBarPosition(editor, range, bar) {
   //apply coordinates to bar
   bar.addClass('mce-tbActiveBar').css({
     "top": top,
-    "left": left
+    "left": left,
+    "width": bubbleBarForcedWidth,
+    "overflow": bubbleBarForcedWidth ? "hidden" : ""
   })
 }
 
 function bubbleUp(editor, addClass) {
-  if (addClass) {
+  if (addClass == 'addClass') {
     if (editor.getParam("inline")) {
-      $(editor.getParam("fixed_toolbar_container")).addClass("mce-bubbleBar")
+      var thisEd = $(editor.getParam("fixed_toolbar_container"))
     } else {
-      $(editor.getContainer()).find(".mce-toolbar-grp").addClass("mce-bubbleBar")
+      var thisEd = $(editor.getContainer()).find(".mce-toolbar-grp")
+    }
+    thisEd.addClass("mce-bubbleBar")
+  }
+  if (addClass == 'addClassSticky') {
+    // var bubbleBarStickyPosition = editor.getParam("bubbleBarStickyPosition") ? "fixed !important" : '';
+    if (editor.getParam("inline")) {
+      var thisEd = $(editor.getParam("fixed_toolbar_container"))
+    } else {
+      var thisEd = $(editor.getContainer()).find(".mce-toolbar-grp")
+    }
+    if (thisEd.hasClass("mce-bubbleBarSticky")){
+      thisEd.removeClass("mce-bubbleBarSticky")
+    }
+    else{
+      thisEd.addClass("mce-bubbleBarSticky")
     }
   }
   setTimeout(function() {
     var range = editor.selection.getRng(true);
     var rangey = "" + range + "";
+    if (editor.getParam("inline")) {
+      var bar = $(editor.getParam("fixed_toolbar_container"))
+    } else {
+      var bar = $(editor.getContainer()).find(".mce-toolbar-grp");
+    }
     if (rangey.trim() !== '') {
-      if (editor.getParam("inline")) {
-        var bar = $(editor.getParam("fixed_toolbar_container"))
-      } else {
-        var bar = $(editor.getContainer()).find(".mce-toolbar-grp");
-      }
       fineTuneBarPosition(editor, range, bar);
     } else {
       $('.mce-bubbleBar').removeClass('mce-tbActiveBar')
@@ -100,11 +119,31 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
   editor.on("init", function() {
     bubbleUp(editor, "addClass")
   })
-  editor.on('mouseup keyup', function(event) {
+  editor.on('mouseup keyup', function() {
     bubbleUp(editor) 
-    // if mouse mouses up outside the boundary of editor, nothing happens
+    // if mouse mousesup outside the boundary of editor, nothing happens
   })
-  editor.on('blur', function(event) {
+  editor.on('blur', function() {
     $('.mce-bubbleBar').removeClass('mce-tbActiveBar')
   })
+
+  editor.addButton('bubbleBarOptionsButton', {
+    type: "splitbutton",
+    text: "...",
+    classes: "bubbleBarOptionsButton",
+    tooltip: 'tinymceBubbleBar options',
+    onPostRender:function(){
+      $(".mce-bubbleBarOptionsButton button:not(.mce-open)").remove()
+    },
+    menu:[
+      {
+        text: "Toggle Sticky Bar",
+        onclick: function(){
+          bubbleUp(editor, "addClassSticky")
+        }
+
+      }
+    ]
+  })
+
 })
