@@ -16,7 +16,7 @@ After loading `jQuery` and `tinymce.js`,
     //inline: true, //or false
     //fixed_toolbar_container: "#myOwnBarWrapper", // use with inline mode
     toolbar: "bold italic underline bubbleBarOptionsButton",
-    //bubbleBarForcedWidth: 200 // optional 
+    //bubbleBarCSSstyle: 'background:white;',  // any CSS except positions top & left
     external_plugins: {
       bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // file location
     }
