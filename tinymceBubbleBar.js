@@ -56,17 +56,17 @@ function fineTuneBarPosition(editor, range, bar) {
   if (middleEdges < middleBar) {
     var left = leftAnchor + middleBar;
   } else if ((windowWidth - middleEdges) < middleBar) {
-    var left = windowWidth + leftAnchor - middleBar;
+    var left = windowWidth + leftAnchor - middleBar - extraPadding;
   } else {
-    var left = leftAnchor + middleEdges;
+    var left = leftAnchor + middleEdges + extraPadding;
   }
-  //added more precision to make sure the bar never bunches up at the window edges
-  if (left < leftExtremist) {
-    var left = extraPadding;
-  }
-  if (left + barWidth > windowWidth) {
-    var left = windowWidth - barWidth - extraPadding;
-  }
+  // //added more precision to make sure the bar never bunches up at the window edges
+  // if (left < leftExtremist) {
+  //   var left = extraPadding;
+  // }
+  // if (left + barWidth > windowWidth) {
+  //   var left = windowWidth - barWidth - extraPadding;
+  // }
   //apply coordinates to bar
   bar.addClass('mce-tbActiveBar')
   .attr('style',bubbleBarCSSstyle)
@@ -138,15 +138,15 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
 
   editor.addButton('bubbleBarOptionsButton', {
     type: "splitbutton",
-    text: "...",
+    // text: "",
     // icon: "fullpage",
-    classes: "bubbleBarOptionsButton",
+    classes: editor.id+ " bubbleBarOptionsButton",
     tooltip: 'tinymceBubbleBar options',
     autohide: false,
     onPostRender:function(){
-      $(".mce-bubbleBarOptionsButton button:not(.mce-open)").remove();
-      $("<span>...</span>").prependTo(".mce-bubbleBarOptionsButton .mce-open").on("click",function(){wordCount(editor)});
-      $(".mce-bubbleBarOptionsButton .mce-open").on("click",function(){
+      $(".mce-"+editor.id+".mce-bubbleBarOptionsButton button:not(.mce-open)").remove();
+      $("<span>...</span>").prependTo(".mce-"+editor.id+".mce-bubbleBarOptionsButton .mce-open");
+      $(".mce-"+editor.id+".mce-bubbleBarOptionsButton .mce-open").on("click",function(){
         setTimeout(function(){
           wordCount(editor)
         },200)
