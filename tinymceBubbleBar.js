@@ -1,6 +1,5 @@
 /*
   jquery.tinymceBubbleBar.js 
-  
   First native plugin for all modes of TinyMCE
 
   https://github.com/donShakespeare/tinymceBubbleBar
@@ -115,9 +114,23 @@ function bubbleUp(editor, addClass) {
 }
 function wordCount(editor) {
   if ($(editor.getBody()).text().trim().length) {
-    $(".mce-npCount span.mce-text").text("Word Count: " + $(editor.getBody()).text().match(/\S+/g).length);
+    var selCount = editor.selection.getRng(true);
+    var selCounty = ""+selCount+"";
+    if(selCounty ==''){
+      $(".mce-npSelCount span.mce-text").text("Selection: None");
+    }
+    else{
+      $(".mce-npSelCount span.mce-text").text("Selected Words: " + selCounty.match(/\S+/g).length + ", Characters: " + selCounty.length);
+    }
+    $(".mce-npCount span.mce-text").text("Total Word Count: " + $(editor.getBody()).text().match(/\S+/g).length);
+    $(".mce-npCSCount span.mce-text").text("Total Characters (+spaces): " + $(editor.getBody()).text().length);
+    // $(".mce-npCCount span.mce-text").text("Character, no Spaces: " + $(editor.getBody()).text().trim().length);
+    $(".mce-npPCount span.mce-text").text("Total Paragraphs: " + $(editor.getBody()).find("p").length);
   } else {
-    $(".mce-npCount span.mce-text").text("Word Count: 0");
+    $(".mce-npCount span.mce-text").text("Total Word Count: 0");
+    $(".mce-npCSCount span.mce-text").text("Total Characters (+spaces): 0");
+    // $(".mce-npCCount span.mce-text").text("Character, no Spaces: 0");
+    $(".mce-npPCount span.mce-text").text("Total Paragraphs: 0");
   }
 }
 
@@ -161,14 +174,28 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
 
       },
       {
-        text: "Word Count",
+        text: "Total Word Count: 000000",
         classes: "npCount",
-        onclick: function(){
-          editor.windowManager.alert("Character + Spaces: "+$(editor.getBody()).text().length+"");
-        }
-
+        menu:[
+          {
+            classes: "npCSCount",
+            text: "Total Characters (+spaces): 0000000",
+            onPostRender: function(){
+              setTimeout(function(){
+                  wordCount(editor)
+                },200)
+            }
+          },
+          {
+            classes: "npPCount",
+            text: "Total Paragraphs: 000000 "
+          },
+          {
+            classes: "npSelCount",
+            text: "Selected Words: 000, Characters: 0000"
+          }
+        ]
       }
     ]
   })
-
 })
