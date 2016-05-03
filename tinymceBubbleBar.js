@@ -1,6 +1,6 @@
 /*
-  jquery.tinymceBubbleBar.js 
-  First native plugin for all modes of TinyMCE
+  tinymceBubbleBar.js 
+  First of its kind native plugin for all modes of TinyMCE
 
   https://github.com/donShakespeare/tinymceBubbleBar
   Demo: http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
@@ -150,8 +150,10 @@ function wordCount(editor) {
 }
 
 tinymce.PluginManager.add('bubbleBar', function(editor) {
+  editor.addCommand('tinymceBubbleBar', function(){});
   editor.on("init", function() {
-    bubbleUp(editor, "addClass")
+    bubbleUp(editor, "addClass");
+    editor.settings.tinymceBubbleBar = true;
   })
   editor.on('mouseup keyup', function() {
     bubbleUp(editor)
@@ -168,14 +170,11 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
       // editor.windowManager.close();
       editor.execCommand('mceImage', true);
     }
-    if (e.target.nodeName == 'PRE') {
-      // editor.windowManager.close();
-      editor.execCommand('codesample', true);
-    }
     if (e.target.nodeName == 'A') {
       // editor.windowManager.close();
       editor.execCommand('mceLink', true);
     }
+    // console.log("a by bubble");
   });
   editor.addButton('bubbleBarOptionsButton', {
     type: "menubutton",
