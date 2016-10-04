@@ -25,7 +25,7 @@ tinymce.init({
       activateMultiBars: 1, //default is 1 (activate magical switching of bars)
       barsForNewLine: 'toolbar2,toolbar3', // comma-separated list of toolbars - default is toolbar2 ... toolbar1 is reserved
       //barsForIMG/Pre/etc: "", //coming soon
-      magicInsert: { //bonus feature to insert P tag in difficult/tight areas - after tagTriggers
+      magicInsert: { //bonus feature (CTRL + CLICK) to insert P tag in difficult/tight areas - after tagTriggers
         activate: 1,
         tagTriggers: "", // default 'h1, h2, h3, pre, p, p img, ol, ul, table, div, hr'
         newLineHTML: "" // default is <p></p>
