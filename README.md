@@ -3,10 +3,10 @@ First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>
 
 Float the menubar, float anything thing! Have one/several toolbars show for newLines ... 
 
+We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed(v1) in the <b>most advanced and simple</b> CMS, <b>MODX</b>, by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
+
 # DEMO
 http://www.donshakespeare.com/tinymceBubbleBar.html
-
-We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed(v1) in the <b>most advanced and simple</b> CMS, <b>MODX</b>, by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
 
 #Usage v2
 ```html
