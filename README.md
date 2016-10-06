@@ -3,34 +3,35 @@ First and only awesome floating air bubble toolbar for TinyMCE (all modes). <br>
 
 Float the menubar, float anything thing! Have one/several toolbars show for newLines ... 
 
+# DEMO
+http://www.donshakespeare.com/tinymceBubbleBar.html
+
 We are glad to dedicate this to TinyMCE, because TinyMCE is simply the best. <br>Pre-installed(v1) in the <b>most advanced and simple</b> CMS, <b>MODX</b>, by <a href="http://modx.com/extras/package/tinymcewrapper" target="_blank">TinymceWrapper Extra</a>
 
 #Usage v2
 ```html
 tinymce.init({
-    selector: "#myEditor",
-    //inline: true, //or false
-    //fixed_toolbar_container: "#myOwnBarWrapperDiv", // for inline mode only
-    external_plugins: {
-      bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // plugin location
-    },
-    menubar: true, //or false - menubar and toolbar1 float together with any other unassigned toolbar#. In iframe mode, menubar is fixed.
-    toolbar1: "bold italic underline bubbleBarOptionsButton", //add optional button for sticky bar and other functionality
-    toolbar2: "image media codesample bubbleBarOptionsButton",
-    toolbar3: "code media codesample bubbleBarOptionsButton",
-    toolbar4: "...",
-    bubbleBarSettings: {
-      customCSSfile: "", // example.css use this to override pre-loaded CSS
-      customCSSinline: "", // .example{display:none} add styles to pre-loaded CSS
-      activateMultiBars: 1, //default is 1 (activate magical switching of bars)
-      barsForNewLine: 'toolbar2,toolbar3', // comma-separated list of toolbars - default is toolbar2 ... toolbar1 is reserved
-      //barsForIMG/Pre/etc: "", //coming soon
-      magicInsert: { //bonus feature (CTRL + CLICK) to insert P tag in difficult/tight areas - after tagTriggers
-        activate: 1,
-        tagTriggers: "", // default 'h1, h2, h3, pre, p, p img, ol, ul, table, div, hr'
-        newLineHTML: "" // default is <p></p>
-      }
-    },
+  selector: "#myEditor",
+  //inline: true, //or false
+  //fixed_toolbar_container: "#myOwnBarWrapperDiv", // for inline mode only
+  external_plugins: {
+    bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", // plugin location
+  },
+  menubar: true, //or false - menubar and toolbar1 float together with any other unassigned toolbar#. In iframe mode, menubar is fixed.
+  toolbar1: "bold italic underline bubbleBarOptionsButton", //add optional button for sticky bar and other functionality
+  toolbar2: "image media codesample bubbleBarOptionsButton",
+  toolbar3: "code media codesample bubbleBarOptionsButton",
+  toolbar4: "...",
+  bubbleBarSettings: {
+    useCustomCSS: 0, // default 0 - use 1 to use your own stylesheet e.g via content_css
+    activateMultiBars: 1, //default is 1 (activate magical switching of bars)
+    barsForNewLine: 'toolbar2,toolbar3', // comma-separated list of toolbars - default is toolbar2 ... toolbar1 is reserved
+    magicInsert: { //bonus feature (CTRL + CLICK) to insert P tag in difficult/tight areas - after tagTriggers
+      activate: 1,
+      tagTriggers: "", // default 'h1, h2, h3, pre, p, p img, ol, ul, table, div, hr'
+      newLineHTML: "" // default is <p></p>
+    }
+  },
 });
 ```
 
