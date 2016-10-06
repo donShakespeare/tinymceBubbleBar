@@ -4,7 +4,7 @@
 
   https://github.com/donShakespeare/tinymceBubbleBar
   Demo: http://www.leofec.com/modx-revolution/tinymce-floating-air-bubble-toolbar.html
-  (c) 2016 by donShakespeare for MODx awesome TinymceWrapper
+  (c) 2016 by donShakespeare for MODX Content and Editor Specialist
 
   Deo Gratias!!
 
@@ -24,12 +24,10 @@
     toolbar3: "code media codesample bubbleBarOptionsButton",
     toolbar4: "...",
     bubbleBarSettings: {
-      customCSSfile: "", // example.css use this to override pre-loaded CSS
-      customCSSinline: "", // .example{display:none} add styles to pre-loaded CSS
+      useCustomCSS: 0, // default 0 - use 1 to use your own stylesheet e.g via content_css
       activateMultiBars: 1, //default is 1 (activate magical switching of bars)
       barsForNewLine: 'toolbar2,toolbar3', // comma-separated list of toolbars - default is toolbar2 ... toolbar1 is reserved
-      //barsForIMG/Pre/etc: "", //coming soon
-      magicInsert: { //bonus feature to insert P tag in difficult/tight areas - after tagTriggers
+      magicInsert: { //bonus feature (CTRL + CLICK) to insert P tag in difficult/tight areas - after tagTriggers
         activate: 1,
         tagTriggers: "", // default 'h1, h2, h3, pre, p, p img, ol, ul, table, div, hr'
         newLineHTML: "" // default is <p></p>
@@ -46,16 +44,9 @@ function tinymceBubbleBarAllowMulti(editor){
   }
 }
 function tinymceBubbleBarCSSInit(editor){
-  var tinymceBubbleBarCSS = ".mce-bubbleBar{position:absolute!important;z-index:999;visibility:hidden}.mce-bubbleBar.mce-tbActiveBar{visibility:visible;animation:tinyBubble-pop-upwards 180ms forwards linear}.mce-tbActiveBar:after{left:50%;border:solid transparent;content:'';height:0;width:0;position:absolute;pointer-events:none;border-color:rgba(241,241,241,0);border-width:10px;margin-left:-10px}.mce-tbActiveBar.bbBottomArrow:after,.mce-tbActiveBar.bbBottomArrowLeft:after{top:100%;border-top-color:#f1f1f1;content:' '}.mce-tbActiveBar.bbTopArrow:after{content:' ';border-bottom-color:#f1f1f1;bottom:100%}.mce-tbActiveBar.bbBottomArrowLeft:after{left:15px}.mce-tbActiveBar.mce-bubbleBarSticky{visibility:visible!important;opacity:1!important}@keyframes tinyBubble-pop-upwards{0%{opacity:0;transform:matrix(.97,0,0,1,0,12)}20%{opacity:.7;transform:matrix(.99,0,0,1,0,2)}40%{opacity:1;transform:matrix(1,0,0,1,0,-1)}100%{transform:matrix(1,0,0,1,0,0)}}.mce-tbActiveBar>div.mce-container{border-width:0!important;padding:2px}.mce-tbActiveBar>div.mce-container :not(.mce-toolbar){width:inherit!important;height:inherit!important; overflow:hidden}.mce-tbActiveBar .mce-btn-group .mce-first{border-left-color:#ccc!important}.mce-tbActiveBar .mce-menubar{width:auto!important}";
+  var tinymceBubbleBarCSS = ".mce-bubbleBar{position:absolute!important;z-index:999;visibility:hidden}.mce-bubbleBar.mce-tbActiveBar{visibility:visible;animation:tinyBubble-pop-upwards 180ms forwards linear}.mce-tbActiveBar:after{left:50%;border:solid transparent;content:'';height:0;width:0;position:absolute;pointer-events:none;border-color:rgba(241,241,241,0);border-width:10px;margin-left:-10px}.mce-tbActiveBar.bbBottomArrow:after,.mce-tbActiveBar.bbBottomArrowLeft:after{top:100%;border-top-color:#f1f1f1;content:' '}.mce-tbActiveBar.bbTopArrow:after{content:' ';border-bottom-color:#f1f1f1;bottom:100%}.mce-tbActiveBar.bbBottomArrowLeft:after{left:10px}.mce-tbActiveBar.mce-bubbleBarSticky{visibility:visible!important;opacity:1!important}@keyframes tinyBubble-pop-upwards{0%{opacity:0;transform:matrix(.97,0,0,1,0,12)}20%{opacity:.7;transform:matrix(.99,0,0,1,0,2)}40%{opacity:1;transform:matrix(1,0,0,1,0,-1)}100%{transform:matrix(1,0,0,1,0,0)}}.mce-tbActiveBar>div.mce-container{border-width:0!important;padding:2px}.mce-tbActiveBar>div.mce-container :not(.mce-toolbar){width:inherit!important;height:inherit!important; overflow:hidden}.mce-tbActiveBar .mce-btn-group .mce-first{border-left-color:#ccc!important}.mce-tbActiveBar .mce-menubar{width:auto!important}";
 
-  if(editor.getParam("bubbleBarSettings",{}).customCSSfile){
-    var tinymceBubbleBarCSS = "";
-    tinymce.DOM.loadCSS(editor.getParam("bubbleBarSettings",{}).customCSSfile);
-  }
-  if(editor.getParam("bubbleBarSettings",{}).customCSSinline){
-    var tinymceBubbleBarCSS = tinymceBubbleBarCSS + editor.getParam("bubbleBarSettings",{}).customCSSinline;
-  }
-  if(!$("#tinymceBubbleBarCSS").length && tinymceBubbleBarCSS !==""){
+  if(!$("#tinymceBubbleBarCSS").length && !editor.getParam("bubbleBarSettings",{}).useCustomCSS){
     $("head").append('<style id="tinymceBubbleBarCSS">'+tinymceBubbleBarCSS+'</style>');
   }
   if(!editor.inline){
@@ -71,28 +62,26 @@ function tinymceBubbleBarPosition(editor, pageY) {
     windowWidth = $(window).innerWidth(),
     windowHeight = $(window).height(),
     scrollTop = document.body.scrollTop || document.documentElement.scrollTop,
-    extraPadding = 10,
+    extraPadding = 15,
     returnKeyBar = editor.getParam("bubbleBarSettings",{}).barsForNewLine ? editor.getParam("bubbleBarSettings",{}).barsForNewLine : "toolbar2",
     primaryBar = "toolbar1", // always so for toolbar1
     showFileMenuBar = 1,
     showBar = primaryBar,
     hideBar = returnKeyBar,
-    origin = "normal";
+    origin = "normal",
+    bar = $(editor.getParam("fixed_toolbar_container"));
 
   // add as many toolbar swaps for as many date-mce-selected elements ..e,g IMG, PRE, etc etc
-  if (range.getBoundingClientRect().top == 0 && range.getBoundingClientRect().width == 0) {
+  if (range.getBoundingClientRect().top === 0 && range.getBoundingClientRect().width === 0) {
     //make a swap for return key bar
-    var showBar = returnKeyBar,
-      hideBar = primaryBar,
-      showFileMenuBar = 0,
-      origin = "returnKey";
+    showBar = returnKeyBar,
+    hideBar = primaryBar,
+    showFileMenuBar = 0,
+    origin = "returnKey";
   }
 
-  if (editor.inline) {
-    var bar = $(editor.getParam("fixed_toolbar_container"));
-  }
-  else {
-    var bar = $(editor.getContainer()).find(".mce-toolbar-grp");
+  if (!editor.inline) {
+    bar = $(editor.getContainer()).find(".mce-toolbar-grp");
   }
 
   // first declaration
@@ -111,14 +100,14 @@ function tinymceBubbleBarPosition(editor, pageY) {
     if(menubar.length){
       if(showFileMenuBar && editor.inline){
         menuGroup.css("top", menubar.outerHeight());
-        var menuBarWidth = menubar.outerWidth(true);
-        var menuBarHeight = menubar.outerHeight(true);
+        menuBarWidth = menubar.outerWidth(true);
+        menuBarHeight = menubar.outerHeight(true);
       }
       else{
         menubar.addClass('bubbleHide');
         menuGroup.css("top", function(i,current) {
           if(parseInt(current) == parseInt(menubar.outerHeight())){
-            return parseInt(current) - parseInt(menubar.outerHeight())
+            return parseInt(current) - parseInt(menubar.outerHeight());
           }
        });
       }
@@ -152,16 +141,23 @@ function tinymceBubbleBarPosition(editor, pageY) {
     // bar.find(".bubbleShow:eq(0)").find(".mce-btn").each(function(){
     //   width +=parseInt($(this).outerWidth(true));
     // });
-    var totalWidth = Math.max.apply(null, $("[bb-set=show]").css("display","inline-block").map(function () {
-        return $(this).outerWidth(true);
-    }).get());
-    $("[bb-set=show]").css("display","block")
+    if(editor.inline){
+      var totalWidth = Math.max.apply(null, $("[bb-set=show]").css("display","inline-block").map(function () {
+          return $(this).outerWidth(true);
+      }).get());
+      $("[bb-set=show]").css("display","block");
+    }
+    else{
+      totalWidth = Math.max.apply(null, $("[bb-set=show] .mce-btn-group").parent().map(function () {
+          return $(this).outerWidth(true);
+      }).get());
+    }
 
     if(menuBarWidth > totalWidth){
       var width = menuBarWidth;
     }
     else{
-      var width = totalWidth;
+      width = totalWidth;
     }
     bar.find("[bb-set=show]").each(function(){
       height +=parseInt($(this).outerHeight(true));
@@ -178,8 +174,8 @@ function tinymceBubbleBarPosition(editor, pageY) {
       });
     }
 
-    //must be redeclared
-    var barHeight = bar.outerHeight(),
+    //must be reassigned
+    barHeight = bar.outerHeight(),
     barWidth = bar.outerWidth(),
     middleBar = barWidth / 2,
     leftExtremist = 0,
@@ -191,49 +187,50 @@ function tinymceBubbleBarPosition(editor, pageY) {
 
   bar.removeClass('bbTopArrow bbBottomArrowLeft').addClass('bbBottomArrow');
   //deal with TinyMCE inline mode - simple element on same page
+  var top, left;
   if (editor.inline) {
-    var top = edges.top + window.pageYOffset - barHeight - extraPadding;
+    top = edges.top + window.pageYOffset - barHeight - extraPadding;
     if (edges.top < bar.height()) {
       // trap bubbleBar below viewport always
       // var top = edges.top + window.pageYOffset + barHeight;
-      var top = edges.top + edges.height + window.pageYOffset + extraPadding;
+      top = edges.top + edges.height + window.pageYOffset + extraPadding;
       bar.removeClass('bbBottomArrow bbBottomArrowLeft').addClass('bbTopArrow');
     }
   }
   //deal with TinyMCE iframe mode - not so simple - stuff changes when iframe has scrollbar
   else {
-    var top = edges.top - barHeight - extraPadding;
+    top = edges.top - barHeight - extraPadding;
     if (edges.top < scrollTop || top < scrollTop) {
       // trap bubbleBar below viewport always
-      var top = edges.bottom + extraPadding;
+      top = edges.bottom + extraPadding;
       bar.removeClass('bbBottomArrow bbBottomArrowLeft').addClass('bbTopArrow');
     }
   }
   // set left variable
   if (middleEdges < middleBar) {
-    var left = leftAnchor + middleBar;
+    left = leftAnchor + middleBar;
     // bar.removeClass('bbBottomArrow bbTopArrow bbBottomArrowLeft');
     bar.removeClass('bbBottomArrowLeft');
   }
   //if bar is falling off the right viewport margin
   else if ((windowWidth - middleEdges) < middleBar) {
-    var left = windowWidth + leftAnchor - middleBar - extraPadding;
+    left = windowWidth + leftAnchor - middleBar - extraPadding;
     // bar.removeClass('bbBottomArrow bbTopArrow bbBottomArrowLeft');
     bar.removeClass('bbBottomArrowLeft');
   }
   else {
     // var left = leftAnchor + middleEdges + extraPadding;
-    var left = leftAnchor + middleEdges;
+    left = leftAnchor + middleEdges;
     bar.removeClass('bbBottomArrowLeft');
   }
 
   // ROADMAP -- add as many toolbars for different elements
   //get return key and all those other empty up and down arrow stuff (try mouseup later)
-  if (tinymceBubbleBarAllowMulti(editor) && range.getBoundingClientRect().top == 0 && range.getBoundingClientRect().width == 0) {
+  if (tinymceBubbleBarAllowMulti(editor) && range.getBoundingClientRect().top === 0 && range.getBoundingClientRect().width === 0) {
     var emptyNode = $(editor.selection.getNode());
     // var top = pageY - barHeight; //a not so useless consideration
-    var top = emptyNode.offset().top - barHeight - extraPadding;
-    var left = emptyNode.offset().left;
+    top = emptyNode.offset().top - barHeight - extraPadding;
+    left = emptyNode.offset().left;
     bar.removeClass('bbBottomArrow bbTopArrow').addClass('bbBottomArrowLeft');
   }
 
@@ -248,10 +245,12 @@ function tinymceBubbleBarPosition(editor, pageY) {
 function tinymceBubbleBarIgnite(editor, addClass, eventWhich, pageY) {
   if(addClass){
     tinymceBubbleBarNewLineTrigger(editor);
+    var thisEd;
     if (editor.inline) {
-      var thisEd = $(editor.getParam("fixed_toolbar_container"));
-    } else {
-      var thisEd = $(editor.getContainer()).find(".mce-toolbar-grp");
+      thisEd = $(editor.getParam("fixed_toolbar_container"));
+    }
+    else {
+      thisEd = $(editor.getContainer()).find(".mce-toolbar-grp");
     }
     if (addClass == 'addClass') {
       thisEd.addClass("mce-bubbleBar");
@@ -270,7 +269,7 @@ function tinymceBubbleBarIgnite(editor, addClass, eventWhich, pageY) {
       var range = editor.selection.getRng(true);
       var rangey = "" + range + "";
       // change this wicked logic to single function checkValidity
-      if (rangey.trim() !== '' || (range.getBoundingClientRect().top == 0 && tinymceBubbleBarAllowMulti(editor) && (eventWhich == 1  || eventWhich == 38 || eventWhich == 40 || eventWhich == 13))) {
+      if (rangey.trim() !== '' || (range.getBoundingClientRect().top === 0 && tinymceBubbleBarAllowMulti(editor) && (eventWhich == 1  || eventWhich == 38 || eventWhich == 40 || eventWhich == 13))) {
         tinymceBubbleBarPosition(editor, pageY);
       }
       else {
@@ -280,20 +279,20 @@ function tinymceBubbleBarIgnite(editor, addClass, eventWhich, pageY) {
   }
 }
 function tinymceBubbleBarWordCount(editor) {
-  var countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
-  var cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g);
-  var thisBody = editor.getContent({format: 'raw'});
-  var selCount = editor.selection.getContent();
-  var words = 0;
-  var xters = 0;
-  var selW = 0;
-  var selC = 0;
+  var countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g),
+    cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g),
+    thisBody = editor.getContent({format: 'raw'}),
+    selCount = editor.selection.getContent(),
+    words = 0,
+    xters = 0,
+    selW = 0,
+    selC = 0;
   if (thisBody) {
     if(selCount){
       if(selCount !== '') {
-        var selC = selCount.length;
-        var sel = selCount.replace(/\.\.\./g, ' ').replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' ').replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ').replace(cleanre, '');
-        var selArray = sel.match(countre);
+        selC = selCount.length;
+        sel = selCount.replace(/\.\.\./g, ' ').replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' ').replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ').replace(cleanre, '');
+        selArray = sel.match(countre);
         if (selArray) {
           selW = selArray.length;
         }
@@ -310,10 +309,10 @@ function tinymceBubbleBarWordCount(editor) {
     }
   }
   $(".mce-npSelCount span.mce-text").text("Selected Words: " + selW + ", Characters: " + selC);
-  $(".mce-npCount span.mce-text").text("Total Word Count: " + words);
-  $(".mce-npCSCount span.mce-text").text("Total Characters (+spaces): " + xters);
+  $(".mce-npCount span.mce-text").text("Word Count: " + words);
+  $(".mce-npCSCount span.mce-text").text("Characters (+spaces): " + xters);
   // $(".mce-npCCount span.mce-text").text("Character, no Spaces: " + $(editor.getBody()).text().trim().length);
-  $(".mce-npPCount span.mce-text").text("Total Paragraphs: " + $(editor.getBody()).find("p").length);
+  $(".mce-npPCount span.mce-text").text("Paragraphs: " + $(editor.getBody()).find("p").length);
 }
 function tinymceBubbleBarNewLineTrigger(editor){
   var nlTB  = editor.getParam("bubbleBarSettings",{}).magicInsert || [];
@@ -352,7 +351,7 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
     $('.mce-bubbleBar').removeClass('mce-tbActiveBar');
   });
   editor.on('focus mouseup keyup change', function() {
-    tinymceBubbleBarWordCount(editor)
+    tinymceBubbleBarWordCount(editor);
   });
   editor.on('DblClick', function(e) {
     if (e.target.nodeName == 'IMG') {
@@ -371,32 +370,32 @@ tinymce.PluginManager.add('bubbleBar', function(editor) {
     autohide: false,
     onclick:function(){
       setTimeout(function(){
-        tinymceBubbleBarWordCount(editor)
-      },200)
+        tinymceBubbleBarWordCount(editor);
+      },200);
     },
     menu:[
       {
         text: "Toggle Sticky",
         onclick: function(){
-          tinymceBubbleBarIgnite(editor, "addClassSticky")
+          tinymceBubbleBarIgnite(editor, "addClassSticky");
         }
       },
       {
-        text: "Total Word Count: 000000",
+        text: "Word Count: 000000",
         classes: "npCount",
         menu:[
           {
             classes: "npCSCount",
-            text: "Total Characters (+spaces): 0000000",
+            text: "Characters (+spaces): 0000000",
             onPostRender: function(){
               setTimeout(function(){
-                  tinymceBubbleBarWordCount(editor)
-                },200)
+                  tinymceBubbleBarWordCount(editor);
+                },200);
             }
           },
           {
             classes: "npPCount",
-            text: "Total Paragraphs: 000000 "
+            text: "Paragraphs: 000000 "
           },
           {
             classes: "npSelCount",
